@@ -61,7 +61,7 @@ module.exports = class CartService {
     console.log("Returning Cart for User Id - " + userId)
     response = await axios.get(ep + "/user/" + `${userId}`)
     // console.log(response.data.carts)
-    return (response.data.carts)
+    return (response)
   }
 
   /**
@@ -104,15 +104,16 @@ module.exports = class CartService {
  */
   async addProductImagesToUserCart(ep, userId) {
     response = await this.getUserCarts(ep, userId)
-    let productCt = Object.keys(response[0].products).length
+    let productCt = Object.keys(response.data.carts[0].products).length
     console.log("No. of products in User's 1st Cart - " + productCt)
     console.log("Cart before NO Images")
-    console.log(response[0].products) //printing all the products on the 1st cart - BEFORE IMAGES
+    console.log(response.data.carts[0].products) //printing all the products on the 1st cart - BEFORE IMAGES
     console.log()
     for (let i = 0; i < productCt; i++) {
-      response[0].products[i].image = 'https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI'
+      response.data.carts[0].products[i].image = 'https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI'
     }
     console.log("Cart After Images")
-    console.log(response[0].products) //printing all the products on the 1st cart - AFTER ADDING IMAGES
+    console.log(response.data.carts[0].products) //printing all the products on the 1st cart - AFTER ADDING IMAGES
+    return(response.data.carts[0].products)
   }
 }
