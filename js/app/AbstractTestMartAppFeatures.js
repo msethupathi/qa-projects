@@ -30,7 +30,8 @@
 //   abstract addProductImagesToUserCart(userId: number): Product[];
 // }
 
-const axios = require('axios')
+// import axios from 'axios';
+const axios = require('axios').default;
 let response, length;
 
 module.exports = class CartService {
@@ -114,6 +115,24 @@ module.exports = class CartService {
     }
     console.log("Cart After Images")
     console.log(response.data.carts[0].products) //printing all the products on the 1st cart - AFTER ADDING IMAGES
-    return(response.data.carts[0].products)
+    return (response.data.carts[0].products)
+  }
+
+  /** Get all Products */
+  async getAllProducts(ep) {
+    console.log("Returning all products")
+    response = await axios.get(ep)
+    length = Object.keys(response.data.products).length
+    console.log("Total products - " + length)
+    return (response)
+  }
+
+  /** Search for Products */
+  async searchForProducts(ep) {
+    console.log("Searching for products")
+    response = axios.get(ep + "/search", { params: {
+     "q": "Apple" }
+    })
+      return (response)
   }
 }
