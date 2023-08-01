@@ -128,11 +128,29 @@ module.exports = class CartService {
   }
 
   /** Search for Products */
-  async searchForProducts(ep) {
+  async searchForProducts(ep, query) {
     console.log("Searching for products")
-    response = axios.get(ep + "/search", { params: {
-     "q": "Apple" }
+    response = axios.get(ep + "/search", {
+      params: {
+        "q": query
+      }
     })
-      return (response)
+    return (response)
   }
+
+  /**
+//    * Prints the titles of all products that have a rating less than or equal to the provided criteria [[ such as rating less than 4.1 for example ]]
+//    * @param rating The rating threshold.
+//    */
+  async getProductTitlesByWorseRating(ep, ratingNum) {
+    let resp = ""
+    await this.getAllProducts(ep).then(data => {resp = (data.data.products)})
+    let ct = Object.keys(resp).length
+    for (let i = 0; i < ct; i++) {
+      if(resp[i].rating < ratingNum) {
+        console.log("Product " + i + " has rating less than " + ratingNum  + " - " + resp[i].title)
+      }
+    }
+  }
+
 }
